@@ -20,6 +20,26 @@ sed -i 's/TARGET_rockchip/TARGET_rockchip\|\|TARGET_armvirt/g' package/lean/auto
 # Set DISTRIB_REVISION
 sed -i "s|DISTRIB_REVISION='.*'|DISTRIB_REVISION='R$(date +%Y.%m.%d)'|g" package/lean/default-settings/files/zzz-default-settings
 
+# Add luci-app-openclash
+svn co https://github.com/vernesong/OpenClash/trunk/luci-app-openclash package/openwrt-openclash
+pushd package/openwrt-openclash/tools/po2lmo && make && sudo make install 2>/dev/null && popd
+
+# Add themes from kenzok8 openwrt-packages
+svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-theme-atmaterial_new kenzok8/luci-theme-atmaterial_new
+svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-theme-edge kenzok8/luci-theme-edge
+svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-theme-ifit kenzok8/luci-theme-ifit
+svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-theme-opentomato kenzok8/luci-theme-opentomato
+svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-theme-opentomcat kenzok8/luci-theme-opentomcat
+svn co https://github.com/kenzok8/openwrt-packages/trunk/luci-theme-opentopd kenzok8/luci-theme-opentopd
+
+# Download luci-app-filebrowser binary
+[ ! -d files/root ] && mkdir -p files/root
+echo -e "  Downloading linux-$1-filebrowser.tar.gz, installing...."
+wget --show-progress -qO- https://github.com/filebrowser/filebrowser/releases/latest/download/linux-$1-filebrowser.tar.gz | tar xOvz > files/root/filebrowser
+chmod +x files/root/filebrowser
+#wget --show-progress -qO files/root/linux-filebrowser.tar.gz http://github.com/filebrowser/filebrowser/releases/latest/download/linux-$1-filebrowser.tar.gz
+#[ -f files/root/linux-filebrowser.tar.gz ] && tar xOvz files/root/linux-filebrowser.tar.gz > files/root/filebrowser
+
 # Modify default IP（FROM 192.168.1.1 CHANGE TO 192.168.31.4）
 # sed -i 's/192.168.1.1/192.168.31.4/g' package/base-files/files/bin/config_generate
 
