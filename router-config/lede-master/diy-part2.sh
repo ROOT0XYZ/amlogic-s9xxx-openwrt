@@ -24,14 +24,6 @@ sed -i "s|DISTRIB_REVISION='.*'|DISTRIB_REVISION='R$(date +%Y.%m.%d)'|g" package
 svn co https://github.com/vernesong/OpenClash/trunk/luci-app-openclash package/openwrt-openclash
 pushd package/openwrt-openclash/tools/po2lmo && make && sudo make install 2>/dev/null && popd
 
-# Download luci-app-filebrowser binary
-[ ! -d files/root ] && mkdir -p files/root
-echo -e "  Downloading linux-$1-filebrowser.tar.gz, installing...."
-wget --show-progress -qO- https://github.com/filebrowser/filebrowser/releases/latest/download/linux-$1-filebrowser.tar.gz | tar xOvz > files/root/filebrowser
-chmod +x files/root/filebrowser
-#wget --show-progress -qO files/root/linux-filebrowser.tar.gz http://github.com/filebrowser/filebrowser/releases/latest/download/linux-$1-filebrowser.tar.gz
-#[ -f files/root/linux-filebrowser.tar.gz ] && tar xOvz files/root/linux-filebrowser.tar.gz > files/root/filebrowser
-
 # Modify default IP（FROM 192.168.1.1 CHANGE TO 192.168.31.4）
 # sed -i 's/192.168.1.1/192.168.31.4/g' package/base-files/files/bin/config_generate
 
